@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100) NOT NULL,
     username VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
+    about TEXT NULL,
     photo VARCHAR(255) NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
@@ -23,6 +24,7 @@ CREATE TABLE IF NOT EXISTS todos (
     description TEXT NOT NULL,
     is_done BOOLEAN NOT NULL,
     cover TEXT NULL,
+    urgency VARCHAR(20) NOT NULL DEFAULT 'Low',
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
 );

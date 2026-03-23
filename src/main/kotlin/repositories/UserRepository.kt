@@ -31,6 +31,7 @@ class UserRepository : IUserRepository {
             name = user.name
             username = user.username
             password = user.password
+            about = user.about // [NEW] Simpan data about saat pembuatan akun
             createdAt = user.createdAt
             updatedAt = user.updatedAt
         }
@@ -49,6 +50,10 @@ class UserRepository : IUserRepository {
             userDAO.username = newUser.username
             userDAO.password = newUser.password
             userDAO.photo = newUser.photo
+
+            // [NEW] Update informasi Tentang
+            userDAO.about = newUser.about
+
             userDAO.updatedAt = newUser.updatedAt
             true
         } else {

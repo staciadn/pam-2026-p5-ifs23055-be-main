@@ -25,18 +25,35 @@ class TodoService(
     private val userRepo: IUserRepository,
     private val todoRepo: ITodoRepository
 ) {
-    // Mengambil semua daftar todo saya
+    // [NEW] Mengambil ringkasan statistik todo untuk halaman Home
+    suspend fun getSummary(call: ApplicationCall) {
+        val user = ServiceHelper.getAuthUser(call, userRepo)
+        val summary = todoRepo.getSummary(user.id)
+
+        val response = DataResponse(
+            "success",
+            "Berhasil mengambil ringkasan todo saya",
+            mapOf("summary" to summary)
+        )
+        call.respond(response)
+    }
+
+    // [MODIFIED] Mengambil semua daftar todo saya dengan pagination dan filter
     suspend fun getAll(call: ApplicationCall) {
         val user = ServiceHelper.getAuthUser(call, userRepo)
 
         val search = call.request.queryParameters["search"] ?: ""
+        val page = call.request.queryParameters["page"]?.toIntOrNull() ?: 1
+        val perPage = call.request.queryParameters["perPage"]?.toIntOrNull() ?: 10
+        val filter = call.request.queryParameters["filter"] ?: "semua"
+        val urgency = call.request.queryParameters["urgency"] ?: ""
 
-        val todos = todoRepo.getAll(user.id, search)
+        val todos = todoRepo.getAll(user.id, search, page, perPage, filter, urgency)
 
         val response = DataResponse(
             "success",
             "Berhasil mengambil daftar todo saya",
-            mapOf(Pair("todos", todos))
+            mapOf("todos" to todos)
         )
         call.respond(response)
     }
@@ -118,6 +135,7 @@ class TodoService(
         request.title = oldTodo.title
         request.description = oldTodo.description
         request.isDone = oldTodo.isDone
+        request.urgency = oldTodo.urgency // [NEW] Pastikan urgency tetap tersimpan
 
         val isUpdated = todoRepo.update(
             user.id,

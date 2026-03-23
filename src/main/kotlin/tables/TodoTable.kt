@@ -9,6 +9,9 @@ object TodoTable : UUIDTable("todos") {
     val description = text("description")
     val cover = text("cover").nullable()
     val isDone = bool("is_done")
+
+    val urgency = varchar("urgency", 20).default("low")
+
     val createdAt = timestamp("created_at")
     val updatedAt = timestamp("updated_at")
 }

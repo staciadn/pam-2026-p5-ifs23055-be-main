@@ -6,7 +6,6 @@ import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import java.util.UUID
 
-
 class TodoDAO(id: EntityID<UUID>) : Entity<UUID>(id) {
     companion object : EntityClass<UUID, TodoDAO>(TodoTable)
 
@@ -15,6 +14,9 @@ class TodoDAO(id: EntityID<UUID>) : Entity<UUID>(id) {
     var description by TodoTable.description
     var cover by TodoTable.cover
     var isDone by TodoTable.isDone
+
+    var urgency by TodoTable.urgency
+
     var createdAt by TodoTable.createdAt
     var updatedAt by TodoTable.updatedAt
 }
